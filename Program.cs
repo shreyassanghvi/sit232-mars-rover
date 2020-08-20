@@ -324,12 +324,23 @@ namespace Program {
             
         }
         public override List<Specimen> Scan() {
-            if (this.battery != null) {
+            List<Specimen> foundSpecimens = new List<Specimen>();
+            if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
+                
+                int x = this.rover.location.x;
+                int y = this.rover.location.y;
                 this.battery.Drain(4);
+                for (int i = -1; i < 3; i++) {
+                    for (int j = -2; j < 3; j++) {
+                        if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
+                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                        }
+                    }
+                }
             } else {
                 Console.WriteLine("No battery attached.");
             }
-            return (new List<Specimen>());
+            return foundSpecimens;
         }
     }
     
@@ -480,7 +491,7 @@ namespace Program {
             specimenList.Add(new Specimen("Lilith: dirt sample", 2));
             specimenList.Add(new Specimen("Malkor: ancient scroll", 3));
             
-            List<Rover> roverList = new List<Rover>();
+            gameMap.PlaceSpecimen(specimenList);
             
             Battery battery0 = new Battery(0);
             Battery battery1 = new Battery(1);
@@ -503,6 +514,10 @@ namespace Program {
             motorList.Add(new Motor("SpinBoy"));
             motorList.Add(new Motor("RotoPro 3Ni"));
             
+            // Generate Rovers
+            
+            List<Rover> roverList = new List<Rover>();
+            
             Rover testRover = new Rover("Opportunity");
             testRover.Place(10, 10, gameMap);
             roverList.Add(testRover);
@@ -514,8 +529,6 @@ namespace Program {
             testRover.AttachDevice(drillList[0]);
             testRover.LoadBattery(battery0);
             testRover.AttachBattery(battery0, drillList[0]);
-            
-            gameMap.PlaceSpecimen(specimenList);
             
             testRover.AttachDevice(motorList[0]);
             testRover.LoadBattery(battery1);
