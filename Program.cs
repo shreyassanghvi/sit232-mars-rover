@@ -349,12 +349,23 @@ namespace Program {
             
         }
         public override List<Specimen> Scan() {
-            if (this.battery != null) {
+            List<Specimen> foundSpecimens = new List<Specimen>();
+            if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
+                
+                int x = this.rover.location.x;
+                int y = this.rover.location.y;
                 this.battery.Drain(4);
+                for (int i = -1; i < 3; i++) {
+                    for (int j = -2; j < 3; j++) {
+                        if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
+                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                        }
+                    }
+                }
             } else {
                 Console.WriteLine("No battery attached.");
             }
-            return (new List<Specimen>());
+            return foundSpecimens;
         }
     }
     
