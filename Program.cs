@@ -237,12 +237,8 @@ namespace Program {
             
         }
         
-        public virtual void Scan() {
-            if (this.battery != null) {
-                this.battery.Drain(4);
-            } else {
-                Console.WriteLine("No battery attached.");
-            }
+        public virtual List<Specimen> Scan() {
+            return (new List<Specimen>());
         }
     }
     
@@ -302,12 +298,24 @@ namespace Program {
             
         }
         
-        public override void Scan() {
-            if (this.battery != null) {
+        public override List<Specimen> Scan() {
+            List<Specimen> foundSpecimens = new List<Specimen>();
+            if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
+                
+                int x = this.rover.location.x;
+                int y = this.rover.location.y;
                 this.battery.Drain(4);
+                for (int i = -1; i < 3; i++) {
+                    for (int j = -2; j < 3; j++) {
+                        if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
+                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                        }
+                    }
+                }
             } else {
                 Console.WriteLine("No battery attached.");
             }
+            return foundSpecimens;
         }
     }
     
@@ -315,12 +323,13 @@ namespace Program {
         public SizeRadar(String name) : base(name) {
             
         }
-        public override void Scan() {
+        public override List<Specimen> Scan() {
             if (this.battery != null) {
                 this.battery.Drain(4);
             } else {
                 Console.WriteLine("No battery attached.");
             }
+            return (new List<Specimen>());
         }
     }
     
@@ -328,12 +337,13 @@ namespace Program {
         public NameRadar(String name) : base(name) {
             
         }
-        public override void Scan() {
+        public override List<Specimen> Scan() {
             if (this.battery != null) {
                 this.battery.Drain(4);
             } else {
                 Console.WriteLine("No battery attached.");
             }
+            return (new List<Specimen>());
         }
     }
     
@@ -444,6 +454,10 @@ namespace Program {
         public Specimen(String name) {
             this.name = name;
         }
+        
+        public override String ToString() {
+            return name;
+        }
     }
     
     class Program {
@@ -522,6 +536,13 @@ namespace Program {
             }
             foreach (Motor motor in motorList) {
                 Console.WriteLine(motor.ToString());
+            }
+            
+            testRover.AttachDevice(radarList[1]);
+            testRover.AttachBattery(battery1, radarList[1]);
+            List<Specimen> foundSpecimens = radarList[1].Scan();
+            foreach (Specimen specimen in foundSpecimens) {
+                Console.WriteLine(specimen.ToString());
             }
             
             do {
