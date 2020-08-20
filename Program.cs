@@ -450,13 +450,15 @@ namespace Program {
     
     class Specimen {
         public String name;
+        public int size;
         
-        public Specimen(String name) {
+        public Specimen(String name, int size) {
             this.name = name;
+            this.size = size;
         }
         
         public override String ToString() {
-            return name;
+            return ($"{name}: size {size}");
         }
     }
     
@@ -467,16 +469,16 @@ namespace Program {
             // Generate specimens
             List<Specimen> specimenList = new List<Specimen>();
             
-            specimenList.Add(new Specimen("Steven: big rock"));
-            specimenList.Add(new Specimen("Steven: little rock"));
-            specimenList.Add(new Specimen("Steven: weird rock"));
-            specimenList.Add(new Specimen("Joel: dirt sample"));
-            specimenList.Add(new Specimen("Joel: biggest rock"));
-            specimenList.Add(new Specimen("Amanda: glowing dirt"));
-            specimenList.Add(new Specimen("Amanda: decommissioned rover"));
-            specimenList.Add(new Specimen("Lilith: glowing dirt"));
-            specimenList.Add(new Specimen("Lilith: dirt sample"));
-            specimenList.Add(new Specimen("Malkor: ancient scroll"));
+            specimenList.Add(new Specimen("Steven: big rock", 10));
+            specimenList.Add(new Specimen("Steven: little rock", 2));
+            specimenList.Add(new Specimen("Steven: weird rock", 5));
+            specimenList.Add(new Specimen("Joel: dirt sample", 2));
+            specimenList.Add(new Specimen("Joel: biggest rock", 12));
+            specimenList.Add(new Specimen("Amanda: glowing dirt", 2));
+            specimenList.Add(new Specimen("Amanda: decommissioned rover", 120));
+            specimenList.Add(new Specimen("Lilith: glowing dirt", 2));
+            specimenList.Add(new Specimen("Lilith: dirt sample", 2));
+            specimenList.Add(new Specimen("Malkor: ancient scroll", 3));
             
             List<Rover> roverList = new List<Rover>();
             
@@ -536,6 +538,10 @@ namespace Program {
             }
             foreach (Motor motor in motorList) {
                 Console.WriteLine(motor.ToString());
+            }
+            
+            foreach (Specimen specimen in specimenList) {
+                Console.WriteLine(specimen.ToString());
             }
             
             testRover.AttachDevice(radarList[1]);
