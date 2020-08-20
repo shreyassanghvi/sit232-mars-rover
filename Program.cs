@@ -115,12 +115,14 @@ namespace Program {
         public List<Specimen> collectedSpecimenList;
         public Location location;
         public String name;
+        public Map map;
         
         public Rover(String name) {
             this.batteryList = new List<Battery>();
             this.deviceList = new List<Device>();
             this.collectedSpecimenList = new List<Specimen>();
             this.name = name;
+            this.map = null;
         }
         
         public void LoadBattery(Battery battery) {
@@ -168,7 +170,7 @@ namespace Program {
             return null;
         }
         
-        public void Move(int x, int y, Map map) {
+        public void Move(int x, int y) {
             int oldX;
             int oldY;
             if (this.location != null) {
@@ -177,7 +179,7 @@ namespace Program {
                 this.location.hasRover = false;
                 this.location.rover = null;
             
-                this.location = map.locationMap[oldX + x, oldY + y];
+                this.location = this.map.locationMap[oldX + x, oldY + y];
                 this.location.hasRover = true;
                 this.location.rover = this;
             } else {
@@ -186,7 +188,8 @@ namespace Program {
         }
         
         public void Place(int x, int y, Map map) {
-            this.location = map.locationMap[x, y];
+            this.map = map;
+            this.location = this.map.locationMap[x, y];
             this.location.hasRover = true;
             this.location.rover = this;
         }
@@ -202,28 +205,28 @@ namespace Program {
             
         }
         
-        public void Move(int cmd, Map map) {
-            if ((this.battery != null) && (this.rover != null)) {
+        public void Move(int cmd) {
+            if ((this.battery != null) && (this.rover != null && (this.rover.map != null))) {
                 this.battery.Drain(1);
                 switch (cmd) {
                     case 1:
-                        this.rover.Move(-1, 0, map);
+                        this.rover.Move(-1, 0);
                         break;
                     case 2:
-                        this.rover.Move(0, 1, map);
+                        this.rover.Move(0, 1);
                         break;
                     case 3:
-                        this.rover.Move(1, 0, map);
+                        this.rover.Move(1, 0);
                         break;
                     case 4:
-                        this.rover.Move(0, -1, map);
+                        this.rover.Move(0, -1);
                         break;
                     default:
                         Console.WriteLine("Move failed.");
                         break;
                 }
             } else {
-                Console.WriteLine("No battery attached or not attached to rover.");
+                Console.WriteLine("No battery attached, not attached to rover, or rover not placed on map.");
             }
         }
     }
@@ -533,13 +536,13 @@ namespace Program {
                     do {
                         input = Console.ReadLine();
                         if (input == "up") {
-                            motorList[0].Move(1, gameMap);
+                            motorList[0].Move(1);
                         } else if (input == "down") {
-                            motorList[0].Move(3, gameMap);
+                            motorList[0].Move(3);
                         } else if (input == "right") {
-                            motorList[0].Move(2, gameMap);
+                            motorList[0].Move(2);
                         } else if (input == "left") {
-                            motorList[0].Move(4, gameMap);
+                            motorList[0].Move(4);
                         } else if (input == "quit") {
                             end = true;
                         } 
