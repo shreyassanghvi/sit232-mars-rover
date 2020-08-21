@@ -260,15 +260,20 @@ namespace Program {
         }
         
         public void DrillHere() {
+            Random rnd = new Random();
             if ((this.battery != null) && (this.rover != null) && (this.rover.location != null)) {
-                this.battery.Drain(1);
-                if (this.rover.location.hasSpecimen) {
-                    this.wearFactor += 5;
-                    this.rover.location.hasSpecimen = false;
-                    this.rover.collectedSpecimenList.Add(this.rover.location.specimen);
-                    this.rover.location.specimen = null;
+                if ((this.wearFactor >= 100) && (rnd.Next(5) == 1)) {
+                    Console.WriteLine("Drill failure");
                 } else {
-                    this.wearFactor += 10;
+                    this.battery.Drain(1);
+                    if (this.rover.location.hasSpecimen) {
+                        this.wearFactor += 5;
+                        this.rover.location.hasSpecimen = false;
+                        this.rover.collectedSpecimenList.Add(this.rover.location.specimen);
+                        this.rover.location.specimen = null;
+                    } else {
+                        this.wearFactor += 10;
+                    }
                 }
             } else {
                 Console.WriteLine("Drill failed.");
