@@ -594,7 +594,7 @@ namespace Program {
         public void ViewDevices() {
             bool quit = false;
             do {
-                Console.WriteLine("1. Motors\n2. Drills\n3.Solar Panels\n4. Radars\n5. Quit");
+                Console.WriteLine("1. Motors\n2. Drills\n3. Solar Panels\n4. Radars\n5. Quit");
                 Console.WriteLine("Select device type:");
                 int input = Convert.ToInt32(Console.ReadLine());
                 
