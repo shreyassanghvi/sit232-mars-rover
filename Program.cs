@@ -320,23 +320,26 @@ namespace Program {
     }
     
     class LocationRadar : Radar {
+        
         public LocationRadar(String name) : base(name) {
-            
         }
         
-        public override List<Specimen> Scan() {
-            List<Specimen> foundSpecimens = new List<Specimen>();
+        public override List<String> Scan() {
+            List<String> foundSpecimens = new List<String>();
             if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
                 
                 int x = this.rover.location.x;
                 int y = this.rover.location.y;
-                this.battery.Drain(4);
-                for (int i = -1; i < 3; i++) {
-                    for (int j = -2; j < 3; j++) {
-                        if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
-                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                if (this.battery.Drain(4)) {
+                    for (int i = -1; i < 3; i++) {
+                        for (int j = -2; j < 3; j++) {
+                            if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
+                                foundSpecimens.Add($"{x + i}, {y + j}");
+                            }
                         }
                     }
+                } else {
+                    Console.WriteLine("Battery low");
                 }
             } else {
                 Console.WriteLine("No battery attached.");
@@ -347,10 +350,10 @@ namespace Program {
     
     class SizeRadar : Radar {
         public SizeRadar(String name) : base(name) {
-            
         }
-        public override List<Specimen> Scan() {
-            List<Specimen> foundSpecimens = new List<Specimen>();
+        
+        public override List<String> Scan() {
+            List<String> foundSpecimens = new List<String>();
             if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
                 
                 int x = this.rover.location.x;
@@ -359,7 +362,7 @@ namespace Program {
                 for (int i = -1; i < 3; i++) {
                     for (int j = -2; j < 3; j++) {
                         if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
-                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                            foundSpecimens.Add($"{this.rover.map.locationMap[x + i, y + j].specimen.size}");
                         }
                     }
                 }
@@ -371,11 +374,12 @@ namespace Program {
     }
     
     class NameRadar : Radar {
+        
         public NameRadar(String name) : base(name) {
-            
         }
-        public override List<Specimen> Scan() {
-            List<Specimen> foundSpecimens = new List<Specimen>();
+        
+        public override List<String> Scan() {
+            List<String> foundSpecimens = new List<String>();
             if ((this.battery != null) && (this.rover != null) && (this.rover.map != null)) {
                 
                 int x = this.rover.location.x;
@@ -384,7 +388,7 @@ namespace Program {
                 for (int i = -1; i < 3; i++) {
                     for (int j = -2; j < 3; j++) {
                         if (this.rover.map.locationMap[x + i, y + j].hasSpecimen == true) {
-                            foundSpecimens.Add(this.rover.map.locationMap[x+i,y+j].specimen);
+                            foundSpecimens.Add($"{this.rover.map.locationMap[x + i, y + j].specimen.name}");
                         }
                     }
                 }
@@ -802,7 +806,7 @@ namespace Program {
                     } catch {
                         Console.WriteLine("Select an option from the list.");
                     }
-                } while done = false
+                } while (!done);
                 
                 switch (selection) {
                     case 1:
@@ -875,9 +879,9 @@ namespace Program {
         }
         
         public void RunRadar(Radar radar) {
-            List<Specimen> outputList = radar.Scan();
-            foreach (Specimen specimen in outputList) {
-                Console.WriteLine(specimen.ToString());
+            List<String> outputList = radar.Scan();
+            foreach (String specimen in outputList) {
+                Console.WriteLine(specimen);
             }
         }
     }
