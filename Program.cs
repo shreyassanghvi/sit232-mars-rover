@@ -703,20 +703,78 @@ namespace Program {
         
         public void ViewSolarPanels() {
             int choice = 1;
-            foreach (SolarPanel solarPanel in solarPanelList) {
+            int input = new int();
+            foreach (SolarPanel solarPanel in this.solarPanelList) {
                 Console.Write($"{choice}: ");
                 Console.WriteLine(solarPanel.ToString());
                 choice += 1;
             }
+            input = Convert.ToInt32(Console.ReadLine());
+            bool quit = false;
+            int selection = new int();
+            do {
+                Console.WriteLine(solarPanelList[input - 1].ToString());
+                Console.WriteLine("1. Attach/detach device\n2. Attach/detach battery\n3. Use device\n4. Cancel");
+                selection = Convert.ToInt32(Console.ReadLine());
+                switch (selection) {
+                    case 1:
+                        if (this.selectedRover == solarPanelList[input - 1].rover) {
+                            selectedRover.DetachDevice(solarPanelList[input - 1]);
+                        } else {
+                            selectedRover.AttachDevice(solarPanelList[input - 1]);
+                        }
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        this.RunSolarPanel(solarPanelList[input - 1]);
+                        break;
+                    case 4:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please select an option from the list.");
+                        break;
+                }
+            } while (quit != true);
         }
         
         public void ViewRadars() {
             int choice = 1;
-            foreach (Radar radar in radarList) {
+            int input = new int();
+            foreach (Radar radar in this.radarList) {
                 Console.Write($"{choice}: ");
                 Console.WriteLine(radar.ToString());
                 choice += 1;
             }
+            input = Convert.ToInt32(Console.ReadLine());
+            bool quit = false;
+            int selection = new int();
+            do {
+                Console.WriteLine(radarList[input - 1].ToString());
+                Console.WriteLine("1. Attach/detach device\n2. Attach/detach battery\n3. Use device\n4. Cancel");
+                selection = Convert.ToInt32(Console.ReadLine());
+                switch (selection) {
+                    case 1:
+                        if (this.selectedRover == radarList[input - 1].rover) {
+                            selectedRover.DetachDevice(radarList[input - 1]);
+                        } else {
+                            selectedRover.AttachDevice(radarList[input - 1]);
+                        }
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        this.RunRadar(radarList[input - 1]);
+                        break;
+                    case 4:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please select an option from the list.");
+                        break;
+                }
+            } while (quit != true);
         }
         
         public void ViewBatteries() {
@@ -760,6 +818,17 @@ namespace Program {
         
         public void RunDrill(Drill drill) {
             drill.DrillHere();
+        }
+        
+        public void RunSolarPanel(SolarPanel solarPanel) {
+            solarPanel.ChargeBattery();
+        }
+        
+        public void RunRadar(Radar radar) {
+            List<Specimen> outputList = radar.Scan();
+            foreach (Specimen specimen in outputList) {
+                Console.WriteLine(specimen.ToString());
+            }
         }
     }
     
