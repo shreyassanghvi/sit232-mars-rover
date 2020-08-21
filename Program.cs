@@ -481,8 +481,170 @@ namespace Program {
         }
     }
     
-    class ProgramTest {
+    class Game {
+        public Map gameMap;
+        List<Rover> roverList;
+        public Rover selectedRover;
+        List<Specimen> specimenList;
+        List<Battery> batteryList;
+        List<Drill> drillList;
+        List<Motor> motorList;
+        List<SolarPanel> solarPanelList;
+        List<Radar> radarList;
+        
+        public Game(int mapSize) {
+            
+            // Generate map
+            this.gameMap = new Map(mapSize);
+            
+            // Generate rovers
+            
+            this.roverList = new List<Rover>();
+            
+            roverList.Add(new Rover("Opportunity"));
+            roverList[0].Place(Convert.ToInt32(mapSize/2), Convert.ToInt32(mapSize/2), gameMap);
+            
+            roverList.Add(new Rover("Spirit"));
+            roverList[1].Place(Convert.ToInt32(mapSize/3), Convert.ToInt32(mapSize/3), gameMap);
+            
+            this.selectedRover = roverList[0];
+            
+            // Generate batteries
+            
+            this.batteryList = new List<Battery>();
+            
+            batteryList.Add(new Battery(1));
+            batteryList.Add(new Battery(2));
+            
+            // Generate devices
+            // Generate motors
+            
+            this.motorList = new List<Motor>();
+            
+            motorList.Add(new Motor("RotoPro 10X"));
+            motorList.Add(new Motor("Kawasaki Wanderer"));
+            
+            // Generate drills
+            
+            this.drillList = new List<Drill>();
+            
+            drillList.Add(new Drill("Drillmaster X"));
+            
+            // Generate solar panels
+            
+            this.solarPanelList = new List<SolarPanel>();
+            
+            solarPanelList.Add(new SolarPanel("SunFriend"));
+            
+            // Generate Radars
+            
+            this.radarList = new List<Radar>();
+            
+            radarList.Add(new LocationRadar("Where 5i"));
+            radarList.Add(new SizeRadar("SeeBiggy"));
+            radarList.Add(new NameRadar("NomSeek"));
+            
+            // Add specimens to map
+            
+            this.specimenList = new List<Specimen>();
+            
+            specimenList.Add(new Specimen("John: Rock", 5));
+            specimenList.Add(new Specimen("John: Dust", 2));
+            specimenList.Add(new Specimen("Elizabeth: Rock", 6));
+            specimenList.Add(new Specimen("Elizabeth: Possible Fossil", 8));
+            specimenList.Add(new Specimen("Elizabeth: Water", 3));
+            specimenList.Add(new Specimen("Milo: Rock", 5));
+            specimenList.Add(new Specimen("Milo: Abandoned Rover", 120));
+            specimenList.Add(new Specimen("Milo: Dust", 2));
+            specimenList.Add(new Specimen("Svetlana: Scraping", 2));
+            specimenList.Add(new Specimen("Svetlana: Dust", 2));
+            
+            this.gameMap.PlaceSpecimen(this.specimenList);
+        }
+        public void ViewRovers() {
+            int input = new int();
+            int choice = 1;
+            foreach (Rover rover in this.roverList) {
+                Console.Write($"{choice}: ");
+                Console.WriteLine(rover.ToString());
+                choice += 1;
+            }
+            Console.Write("Select rover: ");
+            input = Convert.ToInt32(Console.ReadLine());
+            this.selectedRover = roverList[input - 1];
+        }
+        
+        public void ViewDevices() {
+            int choice = 1;
+            List<Device> choiceList = new List<Device>();
+            foreach (Motor motor in this.motorList) {
+                Console.Write($"{choice}");
+                Console.WriteLine(motor.ToString());
+                choice += 1;
+            }
+            foreach (Drill drill in this.drillList) {
+                Console.Write($"{choice}");
+                Console.WriteLine(drill.ToString());
+                choice += 1;
+            }
+            foreach (SolarPanel solarPanel in solarPanelList) {
+                Console.Write($"{choice}");
+                Console.WriteLine(solarPanel.ToString());
+                choice += 1;
+            }
+            foreach (Radar radar in radarList) {
+                Console.Write($"{choice}");
+                Console.WriteLine(radar.ToString());
+                choice += 1;
+            }
+        }
+        
+        public void ViewBatteries() {
+            foreach (Battery battery in this.batteryList) {
+                Console.WriteLine(battery.ToString());
+            }
+        }
+    }
+    
+    class Program {
+        
         public static void Main(String[] args) {
+            
+            bool mainQuit = false;
+            int input = new int();
+            
+            // World setup
+            
+            Game game = new Game(20);
+            
+            // Main loop
+            
+            do {
+                Console.WriteLine($"Mars! Rover: {game.selectedRover.ToString()}");
+                game.gameMap.PrintMap();
+                Console.WriteLine("1. View Rover, 2. View Devices, 3. View Batteries, 4. Quit");
+                input = (Convert.ToInt32(Console.ReadLine()));
+                switch (input) {
+                    case 1:
+                        game.ViewRovers();
+                        break;
+                    case 2:
+                        game.ViewDevices();
+                        break;
+                    case 3:
+                        game.ViewBatteries();
+                        break;
+                    case 4:
+                        mainQuit = true;
+                        break;
+                }
+                
+            } while (mainQuit != true);
+        }
+    }
+    
+    class ProgramTest {
+        public static void Test() {
             // Constructor tests
             Battery battery0 = new Battery(0);
             Rover rover0 = new Rover("Sojourner");
