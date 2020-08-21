@@ -185,8 +185,12 @@ namespace Program {
                 oldY = this.location.y;
                 this.location.hasRover = false;
                 this.location.rover = null;
-            
-                this.location = this.map.locationMap[oldX + x, oldY + y];
+                
+                try {
+                    this.location = this.map.locationMap[oldX + x, oldY + y];
+                } catch {
+                    Console.WriteLine("Move failed - map ends.");
+                }
                 this.location.hasRover = true;
                 this.location.rover = this;
             } else {
