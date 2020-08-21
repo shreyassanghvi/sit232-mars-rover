@@ -47,6 +47,14 @@ namespace Program {
             }
         }
         
+        public void Unload() {
+            if (this.rover != null) {
+                this.rover = null;
+            } else {
+                Console.WriteLine("Not currently loaded.");
+            }
+        }
+        
         public override String ToString() {
             return ($"Serial number: BAT{serial:D4} Charge: {this.charge}");
         }
@@ -484,117 +492,40 @@ namespace Program {
         }
     }
     
-    class Program {
+    class ProgramTest {
         public static void Main(String[] args) {
-            Console.Write("Choose map size: ");
-            int size = Convert.ToInt32(Console.ReadLine());
-            Map gameMap = new Map(size);
-            
-            // Generate specimens
-            List<Specimen> specimenList = new List<Specimen>();
-            
-            specimenList.Add(new Specimen("Steven: big rock", 10));
-            specimenList.Add(new Specimen("Steven: little rock", 2));
-            specimenList.Add(new Specimen("Steven: weird rock", 5));
-            specimenList.Add(new Specimen("Joel: dirt sample", 2));
-            specimenList.Add(new Specimen("Joel: biggest rock", 12));
-            specimenList.Add(new Specimen("Amanda: glowing dirt", 2));
-            specimenList.Add(new Specimen("Amanda: decommissioned rover", 120));
-            specimenList.Add(new Specimen("Lilith: glowing dirt", 2));
-            specimenList.Add(new Specimen("Lilith: dirt sample", 2));
-            specimenList.Add(new Specimen("Malkor: ancient scroll", 3));
-            
-            gameMap.PlaceSpecimen(specimenList);
-            
-            Battery battery0 = new Battery(0);
-            Battery battery1 = new Battery(1);
-            
-            // Generate devices
-            
-            List<Drill> drillList = new List<Drill>();
-            List<SolarPanel> solarPanelList = new List<SolarPanel>();
-            List<Radar> radarList = new List<Radar>();
-            List<Motor> motorList = new List<Motor>();
-            
-            drillList.Add(new Drill("PowerForce Xtreme 1000"));
-            
-            solarPanelList.Add(new SolarPanel("SunBuddy 2.0"));
-            
-            radarList.Add(new NameRadar("SpaceX Auger"));
-            radarList.Add(new LocationRadar("Google Maps"));
-            radarList.Add(new SizeRadar("SpaceX Weight Watcher"));
-            
-            motorList.Add(new Motor("SpinBoy"));
-            motorList.Add(new Motor("RotoPro 3Ni"));
-            
-            // Generate Rovers
-            
-            List<Rover> roverList = new List<Rover>();
-            
-            Rover testRover = new Rover("Opportunity");
-            testRover.Place(10, 10, gameMap);
-            roverList.Add(testRover);
-            
-            Rover testRover2 = new Rover("Spirit");
-            testRover2.Place(12, 12, gameMap);
-            roverList.Add(testRover2);
-                        
-            testRover.AttachDevice(drillList[0]);
-            testRover.LoadBattery(battery0);
-            testRover.AttachBattery(battery0, drillList[0]);
-            
-            testRover.AttachDevice(motorList[0]);
-            testRover.AttachBattery(battery0, motorList[0]);
-            
-            testRover2.LoadBattery(battery1);
-            testRover2.AttachDevice(motorList[1]);
-            testRover2.AttachBattery(battery1, motorList[1]);
-            
-            Console.WriteLine("Mars!");
-            gameMap.PrintMap();
-            String input = String.Empty;
-            bool quit = false;
-            Rover selectedRover = testRover;
-            
-            testRover.AttachDevice(radarList[1]);
-            testRover.AttachBattery(battery0, radarList[1]);
-            List<Specimen> foundSpecimens = radarList[1].Scan();
-
-            do {
-                input = Console.ReadLine();
-                if (input == "new Rover") {
-                    Console.WriteLine($"1. {roverList[0].ToString()}");
-                    Console.WriteLine($"2. {roverList[1].ToString()}");
-                    Console.Write("Select rover: ");
-                    selectedRover = roverList[Convert.ToInt32(Console.ReadLine()) - 1];
-                } else if (input == "move Rover") {
-                    bool end = false;
-                    do {
-                        int n = new int();
-                        if (selectedRover == testRover) {
-                            n = 0;
-                        } else if (selectedRover == testRover2) {
-                            n = 1;
-                        }
-                        input = Console.ReadLine();
-                        if (input == "up") {
-                            motorList[n].Move(1);
-                        } else if (input == "down") {
-                            motorList[n].Move(3);
-                        } else if (input == "right") {
-                            motorList[n].Move(2);
-                        } else if (input == "left") {
-                            motorList[n].Move(4);
-                        } else if (input == "quit") {
-                            end = true;
-                        } 
-                        Console.WriteLine($"Mars! {selectedRover.ToString()}");
-                        gameMap.PrintMap();
-                    } while (end != true);
-                }
-                Console.WriteLine($"Mars! {selectedRover.ToString()}");
-                gameMap.PrintMap();
-            } while (quit != true);
+            // Constructor tests
+            // Battery tests
+                // Drain(int)
+                // Charge(int)
+                // Load(Rover)
+                // Unload()
+                // ToString()
+            // Device tests
+            // Rover tests
+                // 
+                // LoadBattery(Battery)
+                // LoadBattery(List<Battery>)
+                // AttachBattery(Battery, Device)
+                // AttachDevice(Device)
+                // DetachDevice(Device)
+                // FindBattery(String)
+                // Move(int, int)
+                // Place(int, int, Map)
+                // ToString()
+            // Motor tests
+                // Move()
+            // Drill tests
+                // Drill()
+            // SolarPanel tests
+                // Charge()
+            // Radar tests
+            // LocationRadar tests
+            // NameRadar tests
+            // SizeRadar tests
+            // Map tests
+            // Location tests
+            // Specimen tests
         }
     }
 }
