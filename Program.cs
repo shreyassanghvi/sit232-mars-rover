@@ -446,7 +446,9 @@ namespace Program {
             this.rover = null;
         }
         
-        public Location(Specimen specimen) {
+        public Location(int x, int y, Specimen specimen) {
+            this.x = x;
+            this.y = y;
             this.hasSpecimen = true;
             this.specimen = specimen;
             this.hasRover = false;
@@ -482,6 +484,18 @@ namespace Program {
     class ProgramTest {
         public static void Main(String[] args) {
             // Constructor tests
+            Battery battery0 = new Battery(0);
+            Rover rover0 = new Rover("Sojourner");
+            Motor motor0 = new Motor("RotoPro 10X");
+            Drill drill0 = new Drill("DrillMaster 1000");
+            SolarPanel solarPanel0 = new SolarPanel("ReflectoMaster");
+            LocationRadar locationRadar0 = new LocationRadar("WhereDoo");
+            NameRadar nameRadar0 = new NameRadar("Whatsit-O-Meter");
+            SizeRadar sizeRadar0 = new SizeRadar("SeeBiggy");
+            Map map0 = new Map(20);
+            Location location0 = new Location(5, 5);
+            Specimen specimen0 = new Specimen("John: rocks", 10);
+            Location location1 = new Location(10, 10, specimen0);
             // Battery tests
                 // Drain(int)
                 // Charge(int)
