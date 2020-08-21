@@ -159,6 +159,7 @@ namespace Program {
             if (deviceList.Contains(device)) {
                 deviceList.Remove(device);
                 device.Unload();
+                device.DetachBattery();
             } else {
                 Console.WriteLine("Device not present.");
             }
@@ -545,6 +546,7 @@ namespace Program {
             
             batteryList.Add(new Battery(1));
             batteryList.Add(new Battery(2));
+            batteryList.Add(new Battery(3));
             
             // Generate devices
             // Generate motors
@@ -577,6 +579,7 @@ namespace Program {
             // Add devices to Rovers
             
             roverList[0].LoadBattery(batteryList[0]);
+            roverList[0].LoadBattery(batteryList[2]);
             roverList[0].AttachDevice(motorList[0]);
             roverList[0].AttachBattery(batteryList[0], motorList[0]);
             
