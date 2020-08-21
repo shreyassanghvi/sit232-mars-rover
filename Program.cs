@@ -143,7 +143,7 @@ namespace Program {
         public void AttachDevice(Device device) {
             if (device.Load(this)) {
                 this.deviceList.Add(device);
-                this.AttachBattery(this.batteryList[0], device);
+                this.AttachBattery(this.GetChargedBattery(), device);
             } else {
                 Console.WriteLine("Attach failed.");
             }
@@ -165,6 +165,16 @@ namespace Program {
                 }
             }
             return null;
+        }
+        
+        public Battery GetChargedBattery() {
+            Battery returnBattery = this.batteryList[0];
+            foreach (Battery battery in this.batteryList) {
+                if (battery.charge > returnBattery.charge) {
+                    returnBattery = battery;
+                }
+            }
+            return returnBattery;
         }
         
         public void Move(int x, int y) {
