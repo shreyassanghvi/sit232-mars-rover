@@ -18,8 +18,15 @@ namespace Program {
             this.rover = null;
         }
         
-        public void Drain(int charge) {
-            this.charge -= charge;
+        public bool Drain(int charge) {
+            bool success = true;
+            if this.charge > charge {
+                this.charge -= charge;
+            } else {
+                Console.WriteLine("Battery low.");
+                success = false;
+            }
+            return success;
         }
         
         public void Charge(int charge) {
