@@ -544,6 +544,16 @@ namespace Program {
             radarList.Add(new SizeRadar("SeeBiggy"));
             radarList.Add(new NameRadar("NomSeek"));
             
+            // Add devices to Rovers
+            
+            roverList[0].AttachDevice(motorList[0]);
+            roverList[0].LoadBattery(batteryList[0]);
+            roverList[0].AttachBattery(batteryList[0], motorList[0]);
+            
+            roverList[1].AttachDevice(motorList[1]);
+            roverList[1].LoadBattery(batteryList[1]);
+            roverList[1].AttachBattery(batteryList[1], motorList[1]);
+            
             // Add specimens to map
             
             this.specimenList = new List<Specimen>();
@@ -575,34 +585,115 @@ namespace Program {
         }
         
         public void ViewDevices() {
+            bool quit = false;
+            do {
+                Console.WriteLine("1. Motors\n2. Drills\n3.Solar Panels\n4. Radars\n5. Quit");
+                Console.WriteLine("Select device type:");
+                int input = Convert.ToInt32(Console.ReadLine());
+                
+                switch (input) {
+                    case 1:
+                        this.ViewMotors();
+                        quit = true;
+                        break;
+                    case 2:
+                        this.ViewDrills();
+                        quit = true;
+                        break;
+                    case 3:
+                        this.ViewSolarPanels();
+                        quit = true;
+                        break;
+                    case 4:
+                        this.ViewRadars();
+                        quit = true;
+                        break;
+                    case 5:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please select an option from the list.");
+                        break;
+                }
+            } while (quit == false);
+        }
+        
+        public void ViewMotors() {
             int choice = 1;
-            List<Device> choiceList = new List<Device>();
+            int input = new int();
             foreach (Motor motor in this.motorList) {
-                Console.Write($"{choice}");
+                Console.Write($"{choice}: ");
                 Console.WriteLine(motor.ToString());
                 choice += 1;
             }
+            input = Convert.ToInt32(Console.ReadLine());
+            this.RunMotor(motorList[input - 1]);
+        }
+        
+        public void ViewDrills() {
+            int choice = 1;
             foreach (Drill drill in this.drillList) {
-                Console.Write($"{choice}");
+                Console.Write($"{choice}: ");
                 Console.WriteLine(drill.ToString());
                 choice += 1;
             }
+        }
+        
+        public void ViewSolarPanels() {
+            int choice = 1;
             foreach (SolarPanel solarPanel in solarPanelList) {
-                Console.Write($"{choice}");
+                Console.Write($"{choice}: ");
                 Console.WriteLine(solarPanel.ToString());
                 choice += 1;
             }
+        }
+        
+        public void ViewRadars() {
+            int choice = 1;
             foreach (Radar radar in radarList) {
-                Console.Write($"{choice}");
+                Console.Write($"{choice}: ");
                 Console.WriteLine(radar.ToString());
                 choice += 1;
             }
         }
         
         public void ViewBatteries() {
+            int choice = 1;
             foreach (Battery battery in this.batteryList) {
+                Console.Write($"{choice}: ");
                 Console.WriteLine(battery.ToString());
+                choice += 1;
             }
+        }
+        
+        public void RunMotor(Motor motor) {
+            ConsoleKeyInfo keypress;
+            bool quit = false;
+            do {
+                this.gameMap.PrintMap();
+                Console.WriteLine("Arrow keys to control motor, Esc to quit.");
+                keypress = Console.ReadKey(true);
+                switch (keypress.Key) {
+                    case ConsoleKey.UpArrow:
+                        motor.Move(1);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        motor.Move(3);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        motor.Move(4);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        motor.Move(2);
+                        break;
+                    case ConsoleKey.Escape:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Enter a key, silly.");
+                        break;
+                }
+            } while (quit != true);
         }
     }
     
