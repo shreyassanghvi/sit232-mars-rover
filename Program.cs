@@ -768,30 +768,54 @@ namespace Program {
         public void ViewRadars() {
             int choice = 1;
             int input = new int();
+            Radar selectedRadar = null;
+            
             foreach (Radar radar in this.radarList) {
                 Console.Write($"{choice}: ");
                 Console.WriteLine(radar.ToString());
                 choice += 1;
             }
-            input = Convert.ToInt32(Console.ReadLine());
+            
+            
+            bool done = false;
+            do {
+                try {
+                    input = Convert.ToInt32(Console.ReadLine());
+                    selectedRadar = radarList[input - 1];
+                    done = true;
+                } catch {
+                    Console.WriteLine("Select a Radar from the list.");
+                }
+            } while (done != true);
+            
+            
             bool quit = false;
             int selection = new int();
             do {
-                Console.WriteLine(radarList[input - 1].ToString());
                 Console.WriteLine("1. Attach/detach device\n2. Attach/detach battery\n3. Use device\n4. Cancel");
-                selection = Convert.ToInt32(Console.ReadLine());
+                
+                done = false;
+                do {
+                    try {
+                        selection = Convert.ToInt32(Console.ReadLine());
+                        done = true;
+                    } catch {
+                        Console.WriteLine("Select an option from the list.");
+                    }
+                } while done = false
+                
                 switch (selection) {
                     case 1:
-                        if (this.selectedRover == radarList[input - 1].rover) {
-                            selectedRover.DetachDevice(radarList[input - 1]);
+                        if (this.selectedRover == selectedRadar.rover) {
+                            selectedRover.DetachDevice(selectedRadar);
                         } else {
-                            selectedRover.AttachDevice(radarList[input - 1]);
+                            selectedRover.AttachDevice(selectedRadar);
                         }
                         break;
                     case 2:
                         break;
                     case 3:
-                        this.RunRadar(radarList[input - 1]);
+                        this.RunRadar(selectedRadar);
                         break;
                     case 4:
                         quit = true;
