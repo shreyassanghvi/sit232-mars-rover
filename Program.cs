@@ -258,8 +258,8 @@ namespace Program {
             
         }
         
-        public virtual List<Specimen> Scan() {
-            return (new List<Specimen>());
+        public virtual List<String> Scan() {
+            return (new List<String>());
         }
     }
     
