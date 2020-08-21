@@ -486,7 +486,9 @@ namespace Program {
     
     class Program {
         public static void Main(String[] args) {
-            Map gameMap = new Map(20);
+            Console.Write("Choose map size: ");
+            int size = Convert.ToInt32(Console.ReadLine());
+            Map gameMap = new Map(size);
             
             // Generate specimens
             List<Specimen> specimenList = new List<Specimen>();
@@ -542,8 +544,11 @@ namespace Program {
             testRover.AttachBattery(battery0, drillList[0]);
             
             testRover.AttachDevice(motorList[0]);
-            testRover.LoadBattery(battery1);
-            testRover.AttachBattery(battery1, motorList[0]);
+            testRover.AttachBattery(battery0, motorList[0]);
+            
+            testRover2.LoadBattery(battery1);
+            testRover2.AttachDevice(motorList[1]);
+            testRover2.AttachBattery(battery1, motorList[1]);
             
             Console.WriteLine("Mars!");
             gameMap.PrintMap();
@@ -551,30 +556,10 @@ namespace Program {
             bool quit = false;
             Rover selectedRover = testRover;
             
-            foreach (Drill drill in drillList) {
-                Console.WriteLine(drill.ToString());
-            }
-            foreach (SolarPanel solarPanel in solarPanelList) {
-                Console.WriteLine(solarPanel.ToString());
-            }
-            foreach (Radar radar in radarList) {
-                Console.WriteLine(radar.ToString());
-            }
-            foreach (Motor motor in motorList) {
-                Console.WriteLine(motor.ToString());
-            }
-            
-            foreach (Specimen specimen in specimenList) {
-                Console.WriteLine(specimen.ToString());
-            }
-            
             testRover.AttachDevice(radarList[1]);
-            testRover.AttachBattery(battery1, radarList[1]);
+            testRover.AttachBattery(battery0, radarList[1]);
             List<Specimen> foundSpecimens = radarList[1].Scan();
-            foreach (Specimen specimen in foundSpecimens) {
-                Console.WriteLine(specimen.ToString());
-            }
-            
+
             do {
                 input = Console.ReadLine();
                 if (input == "new Rover") {
@@ -585,15 +570,21 @@ namespace Program {
                 } else if (input == "move Rover") {
                     bool end = false;
                     do {
+                        int n = new int();
+                        if (selectedRover == testRover) {
+                            n = 0;
+                        } else if (selectedRover == testRover2) {
+                            n = 1;
+                        }
                         input = Console.ReadLine();
                         if (input == "up") {
-                            motorList[0].Move(1);
+                            motorList[n].Move(1);
                         } else if (input == "down") {
-                            motorList[0].Move(3);
+                            motorList[n].Move(3);
                         } else if (input == "right") {
-                            motorList[0].Move(2);
+                            motorList[n].Move(2);
                         } else if (input == "left") {
-                            motorList[0].Move(4);
+                            motorList[n].Move(4);
                         } else if (input == "quit") {
                             end = true;
                         } 
