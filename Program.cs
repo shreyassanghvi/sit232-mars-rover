@@ -1,19 +1,6 @@
 /* Rover testing suite
  * SIT232 Task 5.3C
  * Benjamin Davey
- * 
- * TODO:
- * - Exception handling
- * - Main loop
- *  - Test rovers
- *  - Test devices
- *  - Test batteries
- *  - Test specimens (10)
- * - LocationScanner.Scan()
- * - NameScanner.Scan()
- * - SizeScanner.Scan()
- * - Rover.GetChargedBattery()
- *  - Rover.AttachDevice() to use Rover.GetChargedBattery()
  */
 
 using System;
