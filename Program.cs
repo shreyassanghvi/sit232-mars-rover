@@ -421,8 +421,8 @@ namespace Program {
         }
         
         public void PrintMap() {
-            for (int i = 0; i < 20; i++) {
-                for (int j = 0; j < 20; j++) {
+            for (int i = 0; i < this.size; i++) {
+                for (int j = 0; j < this.size; j++) {
                     Console.Write(this.locationMap[i, j].ToString() + " | ");
                 }
                 Console.WriteLine();
