@@ -148,9 +148,10 @@ namespace Program {
             }
         }
         
-        void DetachDevice(Device device) {
+        public void DetachDevice(Device device) {
             if (deviceList.Contains(device)) {
                 deviceList.Remove(device);
+                device.Unload();
             } else {
                 Console.WriteLine("Device not present.");
             }
@@ -632,7 +633,33 @@ namespace Program {
                 choice += 1;
             }
             input = Convert.ToInt32(Console.ReadLine());
-            this.RunMotor(motorList[input - 1]);
+            bool quit = false;
+            int selection = new int();
+            do {
+                Console.WriteLine(motorList[input - 1].ToString());
+                Console.WriteLine("1. Attach/detach device\n2. Attach/detach battery\n3. Use device\n4. Cancel");
+                selection = Convert.ToInt32(Console.ReadLine());
+                switch (selection) {
+                    case 1:
+                        if (this.selectedRover == motorList[input - 1].rover) {
+                            selectedRover.DetachDevice(motorList[input - 1]);
+                        } else {
+                            selectedRover.AttachDevice(motorList[input - 1]);
+                        }
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        this.RunMotor(motorList[input - 1]);
+                        break;
+                    case 4:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please select an option from the list.");
+                        break;
+                }
+            } while (quit != true);
         }
         
         public void ViewDrills() {
