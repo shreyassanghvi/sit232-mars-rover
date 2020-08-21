@@ -143,6 +143,7 @@ namespace Program {
         public void AttachDevice(Device device) {
             if (device.Load(this)) {
                 this.deviceList.Add(device);
+                this.AttachBattery(this.batteryList[0], device);
             } else {
                 Console.WriteLine("Attach failed.");
             }
@@ -552,12 +553,12 @@ namespace Program {
             
             // Add devices to Rovers
             
-            roverList[0].AttachDevice(motorList[0]);
             roverList[0].LoadBattery(batteryList[0]);
+            roverList[0].AttachDevice(motorList[0]);
             roverList[0].AttachBattery(batteryList[0], motorList[0]);
             
-            roverList[1].AttachDevice(motorList[1]);
             roverList[1].LoadBattery(batteryList[1]);
+            roverList[1].AttachDevice(motorList[1]);
             roverList[1].AttachBattery(batteryList[1], motorList[1]);
             
             // Add specimens to map
@@ -664,11 +665,40 @@ namespace Program {
         
         public void ViewDrills() {
             int choice = 1;
+            int input = new int();
             foreach (Drill drill in this.drillList) {
                 Console.Write($"{choice}: ");
                 Console.WriteLine(drill.ToString());
                 choice += 1;
             }
+            input = Convert.ToInt32(Console.ReadLine());
+            bool quit = false;
+            int selection = new int();
+            do {
+                Console.WriteLine(drillList[input - 1].ToString());
+                Console.WriteLine("1. Attach/detach device\n2. Attach/detach battery\n3. Use device\n4. Cancel");
+                selection = Convert.ToInt32(Console.ReadLine());
+                switch (selection) {
+                    case 1:
+                        if (this.selectedRover == drillList[input - 1].rover) {
+                            selectedRover.DetachDevice(drillList[input - 1]);
+                        } else {
+                            selectedRover.AttachDevice(drillList[input - 1]);
+                        }
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        this.RunDrill(drillList[input - 1]);
+                        break;
+                    case 4:
+                        quit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Please select an option from the list.");
+                        break;
+                }
+            } while (quit != true);
         }
         
         public void ViewSolarPanels() {
@@ -726,6 +756,10 @@ namespace Program {
                         break;
                 }
             } while (quit != true);
+        }
+        
+        public void RunDrill(Drill drill) {
+            drill.DrillHere();
         }
     }
     
