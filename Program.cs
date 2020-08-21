@@ -20,10 +20,9 @@ namespace Program {
         
         public bool Drain(int charge) {
             bool success = true;
-            if this.charge > charge {
+            if (this.charge > charge) {
                 this.charge -= charge;
             } else {
-                Console.WriteLine("Battery low.");
                 success = false;
             }
             return success;
@@ -225,23 +224,26 @@ namespace Program {
         
         public void Move(int cmd) {
             if ((this.battery != null) && (this.rover != null && (this.rover.map != null))) {
-                this.battery.Drain(1);
-                switch (cmd) {
-                    case 1:
-                        this.rover.Move(-1, 0);
-                        break;
-                    case 2:
-                        this.rover.Move(0, 1);
-                        break;
-                    case 3:
-                        this.rover.Move(1, 0);
-                        break;
-                    case 4:
-                        this.rover.Move(0, -1);
-                        break;
-                    default:
-                        Console.WriteLine("Move failed.");
-                        break;
+                if (this.battery.Drain(1)) {
+                    switch (cmd) {
+                        case 1:
+                            this.rover.Move(-1, 0);
+                            break;
+                        case 2:
+                            this.rover.Move(0, 1);
+                            break;
+                        case 3:
+                            this.rover.Move(1, 0);
+                            break;
+                        case 4:
+                            this.rover.Move(0, -1);
+                            break;
+                        default:
+                            Console.WriteLine("Move failed.");
+                            break;
+                    }
+                } else {
+                    Console.WriteLine("Battery low.");
                 }
             } else {
                 Console.WriteLine("No battery attached, not attached to rover, or rover not placed on map.");
